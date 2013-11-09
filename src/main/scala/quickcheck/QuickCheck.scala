@@ -14,7 +14,10 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     findMin(h) == a
   }
 
-  lazy val genHeap: Gen[H] = ???
+  lazy val genHeap: Gen[H] = for{
+    isEmpty <- arbitrary[Boolean] 
+    item <- if (isEmpty) empty else insert(scala.util.Random.nextInt(), genHeap)
+  } yield item
 
   implicit lazy val arbHeap: Arbitrary[H] = Arbitrary(genHeap)
 
