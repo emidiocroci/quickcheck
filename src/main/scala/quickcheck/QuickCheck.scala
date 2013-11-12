@@ -27,6 +27,11 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     findMin(h) == scala.math.min(a, b)
   }
 
+  property("delMin2") = forAll { (a: Int, b: Int) =>
+    val h = insert( b, insert(a, empty))        
+    findMin(deleteMin(h)) == scala.math.max(a, b)
+  }
+
   property("delMin") = forAll { a: Int =>
   	val h = insert(a, empty)
     isEmpty(deleteMin(h))
@@ -36,6 +41,11 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
  	  val min = findMin(meld(a, b))
  	  (min == findMin(a)) || (min == findMin(b))
   }    
+
+  property("delMin") = forAll { a: Int =>
+    val h = insert(a, empty)
+    isEmpty(deleteMin(meld(h, empty)))
+  }
 
   property("sortedHeap") = forAll { a: H =>
     def isSorted(min: Int, h: H): Boolean = 
